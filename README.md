@@ -1,2 +1,2 @@
-# OCP_NO3_25_26_QUANG_LONG
-LONG_QUANG_our project
+# OCP_NO3_25_26_QUANG_LONG_HẢI
+LONG_QUANG_HẢI our project
