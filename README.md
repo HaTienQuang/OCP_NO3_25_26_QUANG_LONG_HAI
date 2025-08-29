@@ -12,6 +12,12 @@
 Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử dụng **XML** để lưu trữ dữ liệu.
 
 ---
+## UML Sequence Diagram
+![Sequence Diagram](UML Sequence Diagram.png)
+
+## UML Class Diagram
+![Class Diagram](UML Class Diagram.png)
+
 
 ## ✨ Chức năng chính
 - **Quản lý sản phẩm**
