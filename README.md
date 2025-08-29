@@ -16,7 +16,7 @@ Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử d
 ![Sequence Diagram](UML Sequence Diagram.png)
 
 ## UML Class Diagram
-![Class Diagram](UML Class Diagram.png)
+![Class Diagram](UML Class Diagram.jpg)
 
 
 ## ✨ Chức năng chính
