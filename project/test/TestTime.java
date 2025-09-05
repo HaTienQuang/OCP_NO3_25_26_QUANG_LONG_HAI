@@ -1,13 +1,10 @@
-import src.Time;
+import java.time.LocalDateTime;
+
 public class TestTime {
-    public static void main(String[] args) {
-        Time t1 = new Time();
-        Time t2 = new Time(23, 59, 59);
-
-        System.out.println("t1 = " + t1);
-        System.out.println("t2 = " + t2);
-
-        t1.setHour(7).setMinute(30).setSecond(15);
-        System.out.println("Updated t1 = " + t1);
+    public static void run() {
+        System.out.println("Now: " + Time.now());
+        LocalDateTime t1 = LocalDateTime.now();
+        LocalDateTime t2 = t1.plusSeconds(120);
+        System.out.println("Diff: " + Time.diffInSeconds(t1, t2) + " seconds");
     }
 }
