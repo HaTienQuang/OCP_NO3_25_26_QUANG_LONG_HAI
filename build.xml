@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyApp" default="default" basedir=".">
+    <description>Builds, tests, and runs the project MyApp.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Target để sao chép các thư viện vào thư mục lib -->
+    <target name="copy-lib">
+        <mkdir dir="lib"/>
+        <copy todir="lib">
+            <fileset dir="path/to/your/jaxb-api-directory">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Target build -->
+    <target name="build" depends="copy-lib">
+        <!-- Các bước để build dự án -->
+    </target>
+</project>

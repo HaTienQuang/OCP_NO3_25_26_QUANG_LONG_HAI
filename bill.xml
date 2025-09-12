@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bills>
+    <bill>
+        <ID>3</ID>
+        <tenHang>Thit ga</tenHang>
+        <soLuong>3</soLuong>
+        <giaBan>30.0</giaBan>
+    </bill>
+    <bill>
+        <ID>2</ID>
+        <tenHang>Banh mi</tenHang>
+        <soLuong>1</soLuong>
+        <giaBan>145.0</giaBan>
+    </bill>
+    <bill>
+        <ID>6 </ID>
+        <tenHang>Quân áo bóng đá</tenHang>
+        <soLuong>13</soLuong>
+        <giaBan>170.0</giaBan>
+    </bill>
+</bills>
