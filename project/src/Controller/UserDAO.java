@@ -18,9 +18,9 @@ public class UserDAO {
 
     public UserDAO() {
         
-        ls.add(new UserDTO("huuquan", "123456", true));
-        ls.add(new UserDTO("viethung", "123456", true));
-        ls.add(new UserDTO("batai", "123456", true));
+        ls.add(new UserDTO("vietlong", "123456", true));
+        ls.add(new UserDTO("tienquang", "123456", true));
+        ls.add(new UserDTO("dohai", "123456", true));
         ls.add(new UserDTO("admin", "admin", true));
         ls.add(new UserDTO("username", "password", true));
         ls.add(new UserDTO("taikhoan", "matkhau", true));
@@ -36,3 +36,4 @@ public class UserDAO {
         return false;
     }
 }
+
