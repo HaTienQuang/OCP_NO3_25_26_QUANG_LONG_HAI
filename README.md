@@ -14,12 +14,12 @@ Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử d
 ---
 ## UML Sequence Diagram
 <p align="center">
-  <img src="../UML%20Sequence%20Diagram.png" alt="Sequence Diagram" width="600">
+  <img src="UML%20Sequence%20Diagram.png" alt="Sequence Diagram" width="600">
 </p>
 
 ## UML Class Diagram
 <p align="center">
-  <img src="../UML%20Class%20Diagram.jpg" alt="Class Diagram" width="600">
+  <img src="UML%20Class%20Diagram.jpg" alt="Class Diagram" width="600">
 </p>
 
 
