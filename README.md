@@ -128,92 +128,97 @@ Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử d
 
 ### 4.1 SanPhamDAO.java
 ```java
-public void addSanPham(SanPhamDTO sp) {
-    listProducts.add(sp);
-    saveListProducts(listProducts);
+//  CREATE
+public void add(SanPhamDTO product) {
+    // kiểm tra trùng ID
+    if (isIdUnique(product.getID())) {
+        listProducts.add(product);
+        JOptionPane.showMessageDialog(null, "Đã thêm!");
+    } else {
+        JOptionPane.showMessageDialog(null, "Vui lòng kiểm tra lại ID!");
+    }
+    writeListProducts(listProducts); // lưu lại file
 }
 
-public List<SanPhamDTO> getAllSanPham() {
+//  READ
+public List<SanPhamDTO> getListProducts() {
     return listProducts;
 }
 
-public void updateSanPham(String id, SanPhamDTO newSP) {
+//  UPDATE
+public void edit(SanPhamDTO product) {
     for (SanPhamDTO sp : listProducts) {
-        if (sp.getId().equals(id)) {
-            sp.setTenSP(newSP.getTenSP());
-            sp.setSoLuong(newSP.getSoLuong());
-            sp.setGiaNhap(newSP.getGiaNhap());
-            sp.setGiaDeXuat(newSP.getGiaDeXuat());
-            sp.setPhanLoai(newSP.getPhanLoai());
-            sp.setNgayNhap(newSP.getNgayNhap());
+        if (sp.getID().equals(product.getID())) {
+            sp.setTenSP(product.getTenSP());
+            sp.setSoLuong(product.getSoLuong());
+            sp.setGiaNhap(product.getGiaNhap());
+            sp.setGiaDeXuat(product.getGiaDeXuat());
+            sp.setPhanLoai(product.getPhanLoai());
+            sp.setNgayNhap(product.getNgayNhap());
             break;
         }
     }
-    saveListProducts(listProducts);
+    writeListProducts(listProducts); // lưu lại file
 }
 
-public void deleteSanPham(String id) {
-    listProducts.removeIf(sp -> sp.getId().equals(id));
-    saveListProducts(listProducts);
+//  DELETE
+public void delete(SanPhamDTO product) {
+    listProducts.removeIf(sp -> sp.getID().equals(product.getID()));
+    writeListProducts(listProducts); // lưu lại file
 }
+
 ```
 
 ### 4.2 BillDAO.java
 ```java
-public void addBill(BillDTO bill) {
-    listBills.add(bill);
-    saveListBills(listBills);
+public void add(BillDTO product) {
+    if(isIdUnique(product.getID())){
+        BillXML.add(product);
+        JOptionPane.showMessageDialog(null, "Đã thêm!");
+    } else {
+        JOptionPane.showMessageDialog(null, "Đã có mặt hàng này!");
+    }
+    writeBillXML(BillXML);
+}
+public List<BillDTO> readListBills() {
+    List<BillDTO> list = new ArrayList<BillDTO>();
+    BillXML productXML = (BillXML) FileUtils.readXMLFile(PRODUCT_FILE_NAME, BillXML.class);
+    if (productXML != null) {
+        list = productXML.getProduct();
+    }
+    return list;
 }
 
-public List<BillDTO> getAllBills() {
-    return listBills;
+public List<BillDTO> getBillXML() {
+    return BillXML;
 }
-
-public void updateBill(String id, BillDTO newBill) {
-    for (BillDTO b : listBills) {
-        if (b.getID().equals(id)) {
-            b.setTenHang(newBill.getTenHang());
-            b.setSoLuong(newBill.getSoLuong());
-            b.setGiaBan(newBill.getGiaBan());
+public void edit(BillDTO product) {
+    int size = BillXML.size();
+    for (int i = 0; i < size; i++) {
+        if (BillXML.get(i).getID().equals(product.getID())) {
+            BillXML.get(i).setTenHang(product.getTenHang());
+            BillXML.get(i).setSoLuong(product.getSoLuong());
+            BillXML.get(i).setGiaBan(product.getGiaBan());
+            writeBillXML(BillXML);
             break;
         }
     }
-    saveListBills(listBills);
 }
-
-public void deleteBill(String id) {
-    listBills.removeIf(b -> b.getID().equals(id));
-    saveListBills(listBills);
-}
-```
-
-### 4.3 UserDAO.java
-```java
-public void addUser(UserDTO user) {
-    listUsers.add(user);
-    saveListUsers(listUsers);
-}
-
-public List<UserDTO> getAllUsers() {
-    return listUsers;
-}
-
-public void updateUser(String username, UserDTO newUser) {
-    for (UserDTO u : listUsers) {
-        if (u.getUsername().equals(username)) {
-            u.setPassword(newUser.getPassword());
-            u.setRole(newUser.isRole());
-            break;
+public boolean delete(BillDTO product) {
+    int size = BillXML.size();
+    for (int i = 0; i < size; i++) {
+        if (BillXML.get(i).getID().equals(product.getID())) {
+            BillXML.remove(i);
+            writeBillXML(BillXML);
+            return true;
         }
     }
-    saveListUsers(listUsers);
+    return false;
 }
 
-public void deleteUser(String username) {
-    listUsers.removeIf(u -> u.getUsername().equals(username));
-    saveListUsers(listUsers);
-}
 ```
+
+
 
 ## 🚀 Hướng dẫn sử dụng
 1. **Đăng nhập**  
