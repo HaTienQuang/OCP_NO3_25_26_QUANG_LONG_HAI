@@ -167,6 +167,96 @@ Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử d
 - **getListBill()**
 - **setListBill()**
 
+##  CRUD cho 3 đối tượng chính
+
+### 4.1 SanPhamDAO.java
+```java
+public void addSanPham(SanPhamDTO sp) {
+    listProducts.add(sp);
+    saveListProducts(listProducts);
+}
+
+public List<SanPhamDTO> getAllSanPham() {
+    return listProducts;
+}
+
+public void updateSanPham(String id, SanPhamDTO newSP) {
+    for (SanPhamDTO sp : listProducts) {
+        if (sp.getId().equals(id)) {
+            sp.setTenSP(newSP.getTenSP());
+            sp.setSoLuong(newSP.getSoLuong());
+            sp.setGiaNhap(newSP.getGiaNhap());
+            sp.setGiaDeXuat(newSP.getGiaDeXuat());
+            sp.setPhanLoai(newSP.getPhanLoai());
+            sp.setNgayNhap(newSP.getNgayNhap());
+            break;
+        }
+    }
+    saveListProducts(listProducts);
+}
+
+public void deleteSanPham(String id) {
+    listProducts.removeIf(sp -> sp.getId().equals(id));
+    saveListProducts(listProducts);
+}
+```
+
+### 4.2 BillDAO.java
+```java
+public void addBill(BillDTO bill) {
+    listBills.add(bill);
+    saveListBills(listBills);
+}
+
+public List<BillDTO> getAllBills() {
+    return listBills;
+}
+
+public void updateBill(String id, BillDTO newBill) {
+    for (BillDTO b : listBills) {
+        if (b.getID().equals(id)) {
+            b.setTenHang(newBill.getTenHang());
+            b.setSoLuong(newBill.getSoLuong());
+            b.setGiaBan(newBill.getGiaBan());
+            break;
+        }
+    }
+    saveListBills(listBills);
+}
+
+public void deleteBill(String id) {
+    listBills.removeIf(b -> b.getID().equals(id));
+    saveListBills(listBills);
+}
+```
+
+### 4.3 UserDAO.java
+```java
+public void addUser(UserDTO user) {
+    listUsers.add(user);
+    saveListUsers(listUsers);
+}
+
+public List<UserDTO> getAllUsers() {
+    return listUsers;
+}
+
+public void updateUser(String username, UserDTO newUser) {
+    for (UserDTO u : listUsers) {
+        if (u.getUsername().equals(username)) {
+            u.setPassword(newUser.getPassword());
+            u.setRole(newUser.isRole());
+            break;
+        }
+    }
+    saveListUsers(listUsers);
+}
+
+public void deleteUser(String username) {
+    listUsers.removeIf(u -> u.getUsername().equals(username));
+    saveListUsers(listUsers);
+}
+```
 
 ## 🚀 Hướng dẫn sử dụng
 1. **Đăng nhập**  
