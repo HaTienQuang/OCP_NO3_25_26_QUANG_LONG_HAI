@@ -18,7 +18,9 @@ Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử d
 </p>
 
 ## UML Class Diagram
-![Class Diagram](../UML%20Class%20Diagram.jpg)
+<p align="center">
+  <img src="../UML%20Class%20Diagram.jpg" alt="Class Diagram" width="800">
+</p>
 
 
 
