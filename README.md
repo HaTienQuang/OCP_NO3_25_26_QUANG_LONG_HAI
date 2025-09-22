@@ -1,4 +1,4 @@
-# Quản Lý Bán Hàng Siêu Thị
+  # Quản Lý Bán Hàng Siêu Thị
 ## 👨‍💻 Nhóm thực hiện
 - **Chu Việt Long** - 22010107  
 - **Hà Tiến Quang** - 22010136  
@@ -223,15 +223,15 @@ public class UserDAO {
     List <UserDTO> ls = new ArrayList<>();
 
     public UserDAO() {
-        // Khởi tạo sẵn 1 số user
-        ls.add(new UserDTO("huuquan", "123456", true));
-        ls.add(new UserDTO("viethung", "123456", true));
-        ls.add(new UserDTO("batai", "123456", true));
+        
+        ls.add(new UserDTO("hatienquang", "123456", true));
+        ls.add(new UserDTO("chuvietlong", "123456", true));
+        ls.add(new UserDTO("dothanhhai", "123456", true));
         ls.add(new UserDTO("admin", "admin", true));
         ls.add(new UserDTO("username", "password", true));
         ls.add(new UserDTO("taikhoan", "matkhau", true));
+          
     }
-
     public boolean checkLogIn(String username, String password){
         for(UserDTO u : ls){
             if(u.getUsername().equals(username)
@@ -242,6 +242,7 @@ public class UserDAO {
         return false;
     }
 }
+
 ```
 
 
