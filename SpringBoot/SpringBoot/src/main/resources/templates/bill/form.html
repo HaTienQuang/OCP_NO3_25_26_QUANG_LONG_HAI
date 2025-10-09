@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"/><title>Form Hóa đơn</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/></head>
+<body>
+<div class="container mt-4">
+  <a href="/bill" class="btn btn-secondary mb-3">Quay lại</a>
+  <form th:action="@{/bill/save}" th:object="${bill}" method="post">
+    <div class="mb-3">
+      <label>Nhân viên</label>
+      <select class="form-control" name="nhanVien.id" th:field="*{nhanVien.id}">
+        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.tenDangNhap}"></option>
+      </select>
+    </div>
+
+    <div>
+      <h5>Thêm sản phẩm</h5>
+      <div th:each="p,iterStat : ${products}">
+        <input type="checkbox" th:name="productIds" th:value="${p.id}"/> <span th:text="${p.ten}">Tên</span>
+        Số lượng: <input type="number" name="qty" value="1" min="1"/>
+        <br/>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3">Lưu Hóa đơn</button>
+  </form>
+</div>
+</body>
+</html>
