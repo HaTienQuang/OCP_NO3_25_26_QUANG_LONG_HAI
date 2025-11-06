@@ -1,269 +1,152 @@
-  # Quản Lý Bán Hàng Siêu Thị
+# Quản Lý Bán Hàng Siêu Thị
+
 ## 👨‍💻 Nhóm thực hiện
-- **Chu Việt Long** - 22010107  
-- **Hà Tiến Quang** - 22010136  
-- **Đỗ Thanh Hải** - 21011122  
+- **Chu Việt Long** - 22010107
+- **Hà Tiến Quang** - 22010136
+- **Đỗ Thanh Hải** - 21011122
 
 ---
 
 ## 📌 Giới thiệu
-Đây là bài tập lớn môn **Lập trình Hướng Đối Tượng (OOP)** của nhóm sinh viên CNTT, Đại học Phenikaa.  
-Ứng dụng được xây dựng nhằm hỗ trợ siêu thị trong việc quản lý sản phẩm, bán hàng và thống kê doanh thu.  
-Hệ thống được phát triển bằng **Java (Swing, OOP, MVC)** và sử dụng **XML** để lưu trữ dữ liệu.
+Đây là bài tập lớn môn **Lập trình Hướng Đối Tượng (OOP)** của nhóm sinh viên CNTT, Đại học Phenikaa.
+
+Ứng dụng được xây dựng nhằm hỗ trợ siêu thị trong việc quản lý sản phẩm, bán hàng, tài khoản người dùng và thống kê doanh thu.
+
+Hệ thống được phát triển bằng **Spring Boot** sử dụng kiến trúc phân lớp (MVC) với các công nghệ:
+- **Backend:** Java, Spring Boot, Spring Security
+- **Frontend:** Thymeleaf, HTML, CSS
+- **Dữ liệu:** Spring Data JPA, Cloud MySQL (Aiven)
 
 ---
-## UML Sequence Diagram
+##  UML Sequence Diagram
 <p align="center">
-  <img src="UML%20Sequence%20Diagram.png" alt="Sequence Diagram" width="600">
+  <i>*Lưu ý: Các sơ đồ cần được vẽ lại để phản ánh kiến trúc Spring Boot (Controller, Service, Repository).*</i>
+  <br>
+  <i>(Vui lòng thay thế tệp ảnh `UML Sequence Diagram.png` bằng sơ đồ mới)</i>
+  <br>
+  <img src="UML%20Sequence%20Diagram.png" alt="Sequence Diagram" width="600">
 </p>
 
 ## UML Class Diagram
 <p align="center">
-  <img src="UML%20Class%20Diagram.jpg" alt="Class Diagram" width="600">
+  <i>*Lưu ý: Sơ đồ lớp cần được vẽ lại để bao gồm các Entity, Repository, Service, và Controller.*</i>
+  <br>
+  <i>(Vui lòng thay thế tệp ảnh `UML Class Diagram.jpg` bằng sơ đồ mới)</i>
+  <br>
+  <img src="UML%20Class%20Diagram.jpg" alt="Class Diagram" width="600">
 </p>
 
-
-
+---
 
 ## ✨ Chức năng chính
-- **Quản lý sản phẩm**
-  - Thêm, sửa, xóa, tìm kiếm, sắp xếp (theo ID, tên, số lượng, giá).
-- **Quản lý bán hàng**
-  - Tạo hóa đơn, thêm/xóa mặt hàng, tính tổng tiền, in hóa đơn.
-- **Thống kê**
-  - Tổng số admin
+- **Bảo mật & Phân quyền (Spring Security)**
+  - Đăng nhập (trang tùy chỉnh) và Đăng xuất.
+  - Phân quyền dựa trên vai trò (`ROLE_ADMIN`, `ROLE_USER`).
+  - Giao diện (Menu, Nút) tự động ẩn/hiện theo quyền.
+  - Mã hóa mật khẩu người dùng (BCrypt).
+
+- **Chức năng Quản trị (Admin)**
+  - **Quản lý Sản phẩm (CRUD):** Thêm, Sửa, Xóa sản phẩm (với validation).
+  - **Quản lý Người dùng (CRUD):** Thêm, Sửa, Xóa tài khoản (ngăn tự xóa).
+  - **Quản lý Hóa đơn:** Sửa (tên khách hàng) và Xóa (có trả lại tồn kho).
+  - **Thống kê:** Xem trang thống kê tổng hợp (doanh thu, tồn kho, số lượng...).
+  - **Lịch sử:** Xem nhật ký toàn bộ hành động (Audit Log) của hệ thống.
+
+- **Chức năng Nghiệp vụ (User & Admin)**
+  - **Bán hàng:** Giao diện 2 cột (Sản phẩm & Giỏ hàng).
+  - **Giỏ hàng (Session):** Thêm, Sửa số lượng, Xóa khỏi giỏ.
+  - **Quản lý Tồn kho:** Tự động trừ tồn kho khi thêm vào giỏ, trả lại tồn kho khi xóa khỏi giỏ/sửa giảm.
+  - **Lưu Hóa đơn:** Chuyển giỏ hàng (Session) thành hóa đơn chính thức (lưu vào CSDL).
+  - **Xem Hóa đơn:** Xem danh sách và chi tiết các hóa đơn đã lưu.
 
 ---
 
-### 2.3. LoginGUI (Giao diện đăng nhập)
-#### 2.3.1. Methods
-- **code()**: xử lý logic giao diện đăng nhập
-- **design()**: hiển thị giao diện đăng nhập
+## 🏛️ Cấu trúc Dự án (Spring Boot)
+Dự án được xây dựng theo kiến trúc phân lớp `Controller` - `Service` - `Repository`.
+
+### 1. Model (Gói `Model`)
+Định nghĩa các đối tượng Entity (ánh xạ CSDL) và POJO (đối tượng dữ liệu tạm).
+- **`User.java`**: (Entity) Lưu thông tin tài khoản (username, password, role).
+- **`SanPham.java`**: (Entity) Lưu thông tin sản phẩm (tên, giá nhập, giá bán, tồn kho...).
+- **`HoaDon.java`**: (Entity) Thông tin chính của hóa đơn (tên khách, ngày tạo, tổng tiền).
+- **`HoaDonChiTiet.java`**: (Entity) Các mặt hàng chi tiết trong một hóa đơn (liên kết Many-to-One với `HoaDon`).
+- **`AuditLog.java`**: (Entity) Lưu nhật ký hành động (ai, làm gì, khi nào, chi tiết).
+- **`CartItem.java`**: (POJO) Đối tượng biểu diễn một mặt hàng trong giỏ hàng (Session), không lưu vào CSDL.
+
+### 2. Repository (Gói `Repository`)
+Các `interface` kế thừa `JpaRepository` để Spring Data JPA tự động xử lý các thao tác CSDL.
+- **`UserRepository`**: CRUD cho `User`, có hàm `findByUsername`.
+- **`SanPhamRepository`**: CRUD cho `SanPham`, có hàm `findByTenSP`.
+- **`HoaDonRepository`**: CRUD cho `HoaDon`.
+- **`HoaDonChiTietRepository`**: CRUD cho `HoaDonChiTiet`.
+- **`AuditLogRepository`**: CRUD cho `AuditLog`.
+
+### 3. Service (Gói `Service`)
+Nơi xử lý logic nghiệp vụ (business logic) phức tạp.
+- **`UserService`**: Xử lý logic Thêm/Sửa/Xóa user, kiểm tra trùng lặp, mã hóa mật khẩu, ngăn tự xóa.
+- **`CartService`**: (`@SessionScope`) Quản lý giỏ hàng ảo, xử lý logic Thêm/Xóa/Sửa giỏ hàng và cập nhật tồn kho (liên kết với `SanPhamRepository`).
+- **`AuditLogService`**: Cung cấp hàm `logAction` để ghi nhật ký và `getAllLogs` để lấy lịch sử.
+- **`ThongKeService`**: Tính toán các số liệu thống kê cho trang Admin.
+- **`UserDetailsServiceImpl`**: Lớp dịch vụ để Spring Security tìm và xác thực người dùng từ `UserRepository`.
+
+### 4. Controller (Gói `Controller`)
+Tiếp nhận yêu cầu HTTP từ trình duyệt, gọi Service/Repository, và trả về View (HTML) cho người dùng.
+- **`SanPhamController`**: Xử lý CRUD cho sản phẩm (`/sanpham`).
+- **`UserController`**: Xử lý CRUD cho người dùng (`/users`).
+- **`BillController`**: Xử lý trang bán hàng, giỏ hàng (`/banhang`) và lưu hóa đơn.
+- **`HoaDonController`**: Xử lý xem danh sách (`/hoadon`), chi tiết, sửa, xóa hóa đơn.
+- **`ThongKeController`**: Hiển thị trang thống kê (`/thongke`).
+- **`AuditLogController`**: Hiển thị trang lịch sử (`/auditlog`).
+- **`AuthController`**: Hiển thị trang đăng nhập tùy chỉnh (`/login`).
+
+### 5. Config (Gói `Config`)
+Cấu hình hệ thống.
+- **`SecurityConfig.java`**: Cấu hình Spring Security (mã hóa, phân quyền URL, trang đăng nhập/logout).
+
+### 6. View (Thư mục `src/main/resources/templates`)
+Các tệp HTML sử dụng **Thymeleaf** để hiển thị giao diện.
+- **`login.html`**: Trang đăng nhập tùy chỉnh.
+- **`_header.html`**: (Fragment) Thanh điều hướng chung, hiển thị menu theo quyền.
+- **`banhang.html`**: Trang bán hàng chính (danh sách SP và giỏ hàng).
+- **`sanpham-list.html`**, **`sanpham-form.html`**: Trang CRUD sản phẩm.
+- **`user-list.html`**, **`user-form.html`**: Trang CRUD người dùng.
+- **`hoadon-list.html`**, **`hoadon-detail.html`**, **`hoadon-form.html`**: Trang CRUD hóa đơn.
+- **`thongke.html`**: Trang hiển thị thống kê.
+- **`audit-log.html`**: Trang hiển thị lịch sử.
 
 ---
 
-### 2.4. SanPhamDTO (Thông tin sản phẩm)
-#### 2.4.1. Attributes (Thuộc tính)
-- **String id** (mã sản phẩm)
-- **String name** (tên sản phẩm)
-- **String donvitinh** (đơn vị tính, ví dụ: cái, hộp, chai)
-- **double soluong** (số lượng sản phẩm trong kho)
-- **double dongia** (đơn giá sản phẩm)
-- **double giamgia** (giảm giá áp dụng, nếu có)
+## 🛠️ Mã nguồn CRUD (Controller & Service)
+Logic CRUD trong Spring Boot chủ yếu được xử lý bởi `JpaRepository`. Controller và Service gọi các hàm này và thêm logic nghiệp vụ (validation, ghi log).
 
-#### 2.4.2. Methods (Phương thức)
-- **SanPhamDTO()**
-- **get(), set() cho từng thuộc tính**
+### 4.1. SanPhamController (Create/Update)
+Sử dụng `@Valid` để kiểm tra validation từ Entity `SanPham`.
 
----
-
-### 2.5. SanPhamXML (Quản lý XML sản phẩm)
-#### 2.5.1. Attributes
-- **product: SanPhamDTO** (lưu trữ thông tin sản phẩm)
-
-#### 2.5.2. Methods
-- **getProduct()**: lấy dữ liệu sản phẩm từ file XML
-- **setProduct()**: ghi dữ liệu sản phẩm vào file XML
-
----
-
-### 2.6. SanPhamDAO (Xử lý sản phẩm)
-#### 2.6.1. Attributes
-- **listProducts: SanPhamDTO[]** (danh sách sản phẩm)
-
-#### 2.6.2. Methods
-- **readProducts()**
-- **addProduct()**
-- **removeProduct()**
-- **updateProduct()**
-- **getListProducts()**
-- **setListProducts()**
-
----
-
-### 2.7. BanHangGUI (Giao diện bán hàng)
-#### 2.7.1. Methods
-- **code()**: xử lý logic giao diện bán hàng
-- **design()**: thiết kế giao diện hiển thị sản phẩm, giỏ hàng, hóa đơn
-
----
-
-### 2.8. BillDTO (Chi tiết hóa đơn)
-#### 2.8.1. Attributes
-- **String id** (mã hóa đơn)
-- **String tensanpham** (tên sản phẩm trong hóa đơn)
-- **int soluong** (số lượng sản phẩm)
-- **double gia** (đơn giá sản phẩm)
-- **double giamgia** (giảm giá áp dụng)
-
-#### 2.8.2. Methods
-- **BillDTO()**
-- **get(), set() cho từng thuộc tính**
-
----
-
-### 2.9. BillXML (Quản lý file hóa đơn XML)
-#### 2.9.1. Attributes
-- **bill: BillDTO** (chi tiết hóa đơn)
-
-#### 2.9.2. Methods
-- **getBill()**
-- **setBill()**
-
----
-
-### 2.10. BillDAO (Xử lý hóa đơn)
-#### 2.10.1. Attributes
-- **listBill: BillDTO[]** (danh sách hóa đơn)
-
-#### 2.10.2. Methods
-- **readBill()**
-- **addBill()**
-- **removeBill()**
-- **updateBill()**
-- **getListBill()**
-- **setListBill()**
-
-##  CRUD cho 3 đối tượng chính
-
-### 4.1 SanPhamDAO.java
 ```java
-//  CREATE
-public void add(SanPhamDTO product) {
-    // kiểm tra trùng ID
-    if (isIdUnique(product.getID())) {
-        listProducts.add(product);
-        JOptionPane.showMessageDialog(null, "Đã thêm!");
-    } else {
-        JOptionPane.showMessageDialog(null, "Vui lòng kiểm tra lại ID!");
+// CREATE & UPDATE
+@PostMapping("/sanpham/luu")
+public String luuSanPham(@Valid @ModelAttribute("sanPhamMoi") SanPham sanPham,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("pageTitle", (sanPham.getId() == null) ? "Thêm Sản phẩm Mới (Lỗi)" : "Sửa Sản phẩm (Lỗi)");
+        return "sanpham-form"; // Quay lại form nếu có lỗi
     }
-    writeListProducts(listProducts); // lưu lại file
-}
-
-//  READ
-public List<SanPhamDTO> getListProducts() {
-    return listProducts;
-}
-
-//  UPDATE
-public void edit(SanPhamDTO product) {
-    for (SanPhamDTO sp : listProducts) {
-        if (sp.getID().equals(product.getID())) {
-            sp.setTenSP(product.getTenSP());
-            sp.setSoLuong(product.getSoLuong());
-            sp.setGiaNhap(product.getGiaNhap());
-            sp.setGiaDeXuat(product.getGiaDeXuat());
-            sp.setPhanLoai(product.getPhanLoai());
-            sp.setNgayNhap(product.getNgayNhap());
-            break;
-        }
-    }
-    writeListProducts(listProducts); // lưu lại file
-}
-
-//  DELETE
-public void delete(SanPhamDTO product) {
-    listProducts.removeIf(sp -> sp.getID().equals(product.getID()));
-    writeListProducts(listProducts); // lưu lại file
-}
-
-```
-
-### 4.2 BillDAO.java
-```java
-public void add(BillDTO product) {
-    if(isIdUnique(product.getID())){
-        BillXML.add(product);
-        JOptionPane.showMessageDialog(null, "Đã thêm!");
-    } else {
-        JOptionPane.showMessageDialog(null, "Đã có mặt hàng này!");
-    }
-    writeBillXML(BillXML);
-}
-public List<BillDTO> readListBills() {
-    List<BillDTO> list = new ArrayList<BillDTO>();
-    BillXML productXML = (BillXML) FileUtils.readXMLFile(PRODUCT_FILE_NAME, BillXML.class);
-    if (productXML != null) {
-        list = productXML.getProduct();
-    }
-    return list;
-}
-
-public List<BillDTO> getBillXML() {
-    return BillXML;
-}
-public void edit(BillDTO product) {
-    int size = BillXML.size();
-    for (int i = 0; i < size; i++) {
-        if (BillXML.get(i).getID().equals(product.getID())) {
-            BillXML.get(i).setTenHang(product.getTenHang());
-            BillXML.get(i).setSoLuong(product.getSoLuong());
-            BillXML.get(i).setGiaBan(product.getGiaBan());
-            writeBillXML(BillXML);
-            break;
-        }
-    }
-}
-public boolean delete(BillDTO product) {
-    int size = BillXML.size();
-    for (int i = 0; i < size; i++) {
-        if (BillXML.get(i).getID().equals(product.getID())) {
-            BillXML.remove(i);
-            writeBillXML(BillXML);
-            return true;
-        }
-    }
-    return false;
-}
-
-```
-4.3 UserDAO.java
-```java
-public class UserDAO {
-    List <UserDTO> ls = new ArrayList<>();
-
-    public UserDAO() {
+    try {
+        boolean isNew = (sanPham.getId() == null || sanPham.getId() == 0);
+        SanPham savedSanPham = sanPhamRepo.save(sanPham); // JPA xử lý save
         
-        ls.add(new UserDTO("hatienquang", "123456", true));
-        ls.add(new UserDTO("chuvietlong", "123456", true));
-        ls.add(new UserDTO("dothanhhai", "123456", true));
-        ls.add(new UserDTO("admin", "admin", true));
-        ls.add(new UserDTO("username", "password", true));
-        ls.add(new UserDTO("taikhoan", "matkhau", true));
-          
+        // Ghi log
+        String action = isNew ? "CREATE_PRODUCT" : "UPDATE_PRODUCT";
+        String details = String.format("ID: %d, Tên: %s, SL: %d",
+                                       savedSanPham.getId(), savedSanPham.getTenSP(), savedSanPham.getSoLuong());
+        auditLogService.logAction(action, details);
+        
+        redirectAttributes.addFlashAttribute("successMessage", isNew ? "Đã thêm!" : "Đã cập nhật!");
+    } catch (Exception e) {
+        auditLogService.logAction("SAVE_PRODUCT_ERROR", e.getMessage());
+        redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi lưu sản phẩm.");
     }
-    public boolean checkLogIn(String username, String password){
-        for(UserDTO u : ls){
-            if(u.getUsername().equals(username)
-                    &&u.getPassword().equals(password)){
-                return true;
-            }
-        }
-        return false;
-    }
+    return "redirect:/sanpham";
 }
-
-```
-
-
-
-## 🚀 Hướng dẫn sử dụng
-1. **Đăng nhập**  
-   - Tài khoản mặc định:
-     - `admin / admin`
-2. **Menu chính** gồm:
-   - Sản phẩm
-   - Hóa đơn
-   - Thống kê
-   - Đăng xuất
-3. **Thao tác quản lý**:
-   - Thêm, sửa, xóa, tìm kiếm và sắp xếp sản phẩm.
-   - Tạo hóa đơn bán hàng, tính tổng tiền và in hóa đơn.
-   - Xem thống kê doanh thu, lợi nhuận.
-
----
-
-## 📖 Tài liệu tham khảo
-- [Chuyển đổi giữa CSDL quan hệ và XML – ĐHQG Hà Nội, PGS.TS. Đỗ Trung Tuấn (2011)]  
-- [Tìm hiểu về XML](https://topdev.vn/blog/xml-la-gi/)  
-- [Mô hình MVC là gì?](https://vietnix.vn/tim-hieu-mo-hinh-mvc-la-gi/)  
